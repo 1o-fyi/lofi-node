@@ -112,6 +112,16 @@ service :: init-service start
 send ::
 				cd .. && tar cf $(NAME).$(VERSION).tar.xz $(NAME)/ && wormhole send $(NAME).$(VERSION).tar.xz   
 
-install-scripts :: 
-				cat <(curl -sS https://git.sr.ht/~johns/tag/blob/main/tag) > tag && chmod 755 tag
-				cat <(curl -sS https://git.sr.ht/~johns/install-go/blob/main/install-go) > install-go && chmod 755 install-go
+send ::
+				cd .. && tar cf $(NAME).$(VERSION).tar.xz $(NAME)/ && wormhole send $(NAME).$(VERSION).tar.xz   
+
+get-tag ::
+				$(shell curl https://git.sr.ht/~johns/tag/blob/main/tag > tag && chmod 755 tag)
+
+get-go ::
+				$(shell curl https://git.sr.ht/~johns/install-go/blob/main/install-go > install-go && chmod 755 install-go)
+
+get-license ::
+				$(shell curl https://www.gnu.org/licenses/agpl-3.0.txt > LICENSE)
+
+install-scripts :: get-tag get-go
