@@ -1,8 +1,8 @@
 filippo.io/age v1.0.0-rc.3 h1:8JjuJ5ffGKDmC4SS0zoyQxZROZX75so768b7AjulKLw=
 filippo.io/age v1.0.0-rc.3/go.mod h1:UjINLBMeA60aGZkHCGsmDzKcaXoTTzpvrqQM+Vo3YHU=
 filippo.io/edwards25519 v1.0.0-beta.3/go.mod h1:X+pm78QAUPtFLi1z9PYIlS/bdDnvbCOGKtZ+ACWEf7o=
-git.sr.ht/~lofi/lib v0.0.0-20210904211656-a0421fdec9b0 h1:PQ0nUiPSQZ+AZSZPp2cBmz3vkBYsAzoC2ssNNhq9xW0=
-git.sr.ht/~lofi/lib v0.0.0-20210904211656-a0421fdec9b0/go.mod h1:73Uyg0sHjhOGMS9wybiSVkg8vDqJIZGLpOxdJArGo78=
+git.sr.ht/~lofi/lib v0.0.6 h1:0zVhKHDNJovPYmjZNqddjw6TZ1CLHXe11j4mo7qMD1U=
+git.sr.ht/~lofi/lib v0.0.6/go.mod h1:73Uyg0sHjhOGMS9wybiSVkg8vDqJIZGLpOxdJArGo78=
 github.com/cespare/xxhash/v2 v2.1.1 h1:6MnRN8NT7+YBpUIWxHtefFZOKTAPgGjpQSxqLNn0+qY=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

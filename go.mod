@@ -1,8 +1,8 @@
-module johns/rc-iv
+module git.sr.ht/~johns/rc-server
 
 go 1.17
 
-require git.sr.ht/~lofi/lib v0.0.0-20210904211656-a0421fdec9b0
+require git.sr.ht/~lofi/lib v0.0.6
 
 require (
 	filippo.io/age v1.0.0-rc.3 // indirect

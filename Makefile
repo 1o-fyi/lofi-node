@@ -12,11 +12,11 @@ CC := GO111MODULE=on CGO_ENABLED=0 go
 CFLAGS := build -o
 SHELL := /bin/bash
 
-NAME := recurse
-USER := ok-john
-REMOTE := 1o.fyi
-
+NAME := rc-server
+USER := johns
+REMOTE := git.sr.ht
 MODULE := $(PWD)/$(REMOTE)/$(USER)/$(NAME)
+RW := git@$(MODULE)
 DAEMON_CONFIG := $(NAME).service
 DAEMON_ENV := /etc/conf.d/$(NAME)
 DAEMON_PATH := /var/local/$(NAME)

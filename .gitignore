@@ -1,2 +1,20 @@
-recurse
-1o.fyi
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+.xor.*
+*.test
+*.out
+
+# scripts
+install-go
+tag
+rc-client
+rc-server
+*.age
+
+# local build directory
+/github.com/
+/git.sr.ht/
