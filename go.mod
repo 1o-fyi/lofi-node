@@ -1,4 +1,4 @@
-module git.sr.ht/~johns/rc-server
+module github.com/1o-fyi/1ofi-node
 
 go 1.17
 

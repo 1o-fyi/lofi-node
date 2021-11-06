@@ -12,9 +12,9 @@ CC := GO111MODULE=on CGO_ENABLED=0 go
 CFLAGS := build -o
 SHELL := /bin/bash
 
-NAME := rc-server
-USER := johns
-REMOTE := git.sr.ht
+NAME := lofi-node
+USER := 1o-fyi
+REMOTE := github.com
 MODULE := $(PWD)/$(REMOTE)/$(USER)/$(NAME)
 RW := git@$(MODULE)
 DAEMON_CONFIG := $(NAME).service
