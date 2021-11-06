@@ -2,7 +2,7 @@ module git.sr.ht/~johns/rc-server
 
 go 1.17
 
-require git.sr.ht/~lofi/lib v0.0.6
+require git.sr.ht/~lofi/lib v0.0.10
 
 require (
 	filippo.io/age v1.0.0-rc.3 // indirect
