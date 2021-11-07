@@ -1,10 +1,7 @@
 package main
 
 import (
-	"embed"
 	_ "embed"
-	"fmt"
-	"log"
 	"strings"
 
 	"git.sr.ht/~lofi/lib"
@@ -15,9 +12,6 @@ import (
 // If you know a better way to do this please reach out.
 
 var (
-	// go:embed embedded/fs/*
-	embeddedUsers embed.FS
-
 	// domain is the public facing url of
 	// the host. ( e.g foo.com )
 	// No need to prefix with https, however,
@@ -39,15 +33,6 @@ func init() {
 	rawArt = <-lib.DecodeBase64(rawArt)
 	redisDomain = trimDecode(redisDomain)
 	domain = trimDecode(domain)
-	userFiles, err := embeddedUsers.ReadDir("users")
-	if err != nil {
-		panic(fmt.Sprintf("err parsing user file %v", err))
-	}
-
-	for _, user := range userFiles {
-		log.Println(user)
-	}
-
 }
 
 func trimDecode(s string) string {

@@ -11,9 +11,8 @@
 # scripts
 install-go
 tag
-rc-client
-rc-server
 *.age
+lofi-node
 
 # local build directory
 /github.com/
