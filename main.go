@@ -10,9 +10,7 @@ import (
 
 var (
 	canSet = map[string]bool{
-		"id":   false,
-		"jake": false,
-		"john": false,
+		"id": false,
 	}
 )
 
