@@ -2,11 +2,7 @@ package main
 
 import (
 	_ "embed"
-<<<<<<< HEAD
 	"os"
-=======
-	"strings"
->>>>>>> 00d90ab (embedded: remove userlist)
 
 	"git.sr.ht/~lofi/lib"
 )
@@ -35,19 +31,10 @@ var (
 
 func init() {
 	rawArt = <-lib.DecodeBase64(rawArt)
-<<<<<<< HEAD
 	redisDomain = string(<-lib.DecodeHex([]byte(redisDomain)))
 	domain = string(<-lib.DecodeHex([]byte(domain)))
 	os.Stdout.Write([]byte("\n[ lofi-node config ]"))
 	os.Stdout.Write([]byte("\ndomain: " + domain))
 	os.Stdout.Write([]byte("\nredis: " + redisDomain))
 	os.Stdout.Write([]byte("\n"))
-=======
-	redisDomain = trimDecode(redisDomain)
-	domain = trimDecode(domain)
-}
-
-func trimDecode(s string) string {
-	return string(<-lib.DecodeHex([]byte(strings.TrimSpace(s))))
->>>>>>> 00d90ab (embedded: remove userlist)
 }
