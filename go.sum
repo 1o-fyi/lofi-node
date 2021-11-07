@@ -1,8 +1,6 @@
 filippo.io/age v1.0.0-rc.3 h1:8JjuJ5ffGKDmC4SS0zoyQxZROZX75so768b7AjulKLw=
 filippo.io/age v1.0.0-rc.3/go.mod h1:UjINLBMeA60aGZkHCGsmDzKcaXoTTzpvrqQM+Vo3YHU=
 filippo.io/edwards25519 v1.0.0-beta.3/go.mod h1:X+pm78QAUPtFLi1z9PYIlS/bdDnvbCOGKtZ+ACWEf7o=
-git.sr.ht/~lofi/lib v0.0.10 h1:3LYPrIfWQTQTdqKj+ZTfVVoXZz5fHFF70pfonrYH0eQ=
-git.sr.ht/~lofi/lib v0.0.10/go.mod h1:73Uyg0sHjhOGMS9wybiSVkg8vDqJIZGLpOxdJArGo78=
 git.sr.ht/~lofi/lib v0.0.11 h1:+mAH6Qd5gesiJF+py4fvX53trsTBptpKvAjHavVi3a4=
 git.sr.ht/~lofi/lib v0.0.11/go.mod h1:73Uyg0sHjhOGMS9wybiSVkg8vDqJIZGLpOxdJArGo78=
 github.com/cespare/xxhash/v2 v2.1.1 h1:6MnRN8NT7+YBpUIWxHtefFZOKTAPgGjpQSxqLNn0+qY=
