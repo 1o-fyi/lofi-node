@@ -1,0 +1,37 @@
+[Unit]
+Description="lofi-node systemd service"
+After=network.target
+
+[Service]
+Group=lofi-node
+User=lofi
+
+ExecStartPre=/bin/chown -R lofi /var/local/lofi-node
+ExecStartPre=/bin/chown -R lofi /etc/letsencrypt/live/dev.1o.fyi
+
+ExecStart=/var/local/lofi-node/start
+ExecStart=/bin/bash -c '/var/local/lofi-node/start'
+PermissionsStartOnly=true
+SyslogIdentifier=lofi-node
+
+KillMode=process
+PrivateTmp=true
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+SecureBits=noroot-locked
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+MountFlags=private
+NoNewPrivileges=true
+PrivateDevices=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+MemoryDenyWriteExecute=true
+DynamicUser=true
+
+[Install]
+WantedBy=multi-user.target
+
