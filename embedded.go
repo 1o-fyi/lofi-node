@@ -25,6 +25,11 @@ var (
 	//go:embed embedded/cfg/redisDomain.cfg
 	redisDomain string
 
+	// the list of registered users from github
+	//go:embed embedded/cfg/register.cfg
+	registryUrl string
+
+	// the artwork used on the homepage.
 	//go:embed embedded/art/home.b64
 	rawArt []byte
 )
@@ -33,8 +38,11 @@ func init() {
 	rawArt = <-lib.DecodeBase64(rawArt)
 	redisDomain = string(<-lib.DecodeHex([]byte(redisDomain)))
 	domain = string(<-lib.DecodeHex([]byte(domain)))
+	registryUrl = string(<-lib.DecodeHex([]byte(registryUrl)))
+
 	os.Stdout.Write([]byte("\n[ lofi-node config ]"))
 	os.Stdout.Write([]byte("\ndomain: " + domain))
 	os.Stdout.Write([]byte("\nredis: " + redisDomain))
+	os.Stdout.Write([]byte("\nregistry: " + registryUrl))
 	os.Stdout.Write([]byte("\n"))
 }
