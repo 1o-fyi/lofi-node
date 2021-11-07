@@ -2,7 +2,7 @@ module github.com/1o-fyi/1ofi-node
 
 go 1.17
 
-require git.sr.ht/~lofi/lib v0.0.10
+require git.sr.ht/~lofi/lib v0.0.11
 
 require (
 	filippo.io/age v1.0.0-rc.3 // indirect

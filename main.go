@@ -17,7 +17,7 @@ var (
 )
 
 func main() {
-	l, err := lib.NewLinker(name, apath)
+	l, err := lib.NewLinker(domain, redisDomain)
 	if err != nil {
 		panic(err)
 	}
