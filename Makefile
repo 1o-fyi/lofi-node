@@ -47,16 +47,16 @@ pull :: pull-go pull-make
 init :: build
 				$(CC) mod init $(MODULE)
 
-mod-install :: 
+format :: 
+				$(CC)fmt -w -s *.go
+
+mod-install :: format
 				$(CC) install ./... 
 
 tidy :: mod-install
 				$(CC) mod tidy -compat=1.17
 				
-format :: tidy
-				$(CC)fmt -w -s *.go
-
-test ::	 format
+test ::	 tidy
 				$(CC) test -v ./...
 
 compile :: test
