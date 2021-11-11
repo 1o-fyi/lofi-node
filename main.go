@@ -57,18 +57,31 @@ func main() {
 //
 // this is a simple security measure to prevent unknown users from interacting.
 func updateRegistry(l *lib.Linker) (map[string]string, error) {
+
+	// query the registry url & wrap the respone with a scanner
 	resp, err := http.Get(registryUrl)
 	if err != nil {
 		return nil, err
 	}
 	sc := bufio.NewScanner(resp.Body)
+
+	// this doesn't need to exist, was mainly for testing purposes.
+	// going to keep it for now but can likely be removed & nothing should
+	// really depend on using this.
 	registry := map[string]string{}
+
+	// the default scanner in go will give us a newline
+	// every time Scan() is called.
 	for sc.Scan() {
+
+		// raw line
 		line := sc.Bytes()
-		// ignore commented lines && empty lines
+
+		// ignore empty lines && commented lines
 		if len(line) <= 1 || line[0] == '#' {
 			continue
 		}
+
 		// split on domain seperator (::)
 		splitLine := bytes.Split(line, []byte("::"))
 
@@ -104,17 +117,18 @@ func updateRegistry(l *lib.Linker) (map[string]string, error) {
 		if _, err := l.RC.Set(context.TODO(), string(user), string(pbRaw), 0).Result(); err != nil {
 			return nil, errors.New("failed to add user -> pb mapping from registry")
 		}
-		if _, err := l.RC.Set(context.TODO(), string(pbRaw), string(g2Raw)).Result(); err != nil {
+		if _, err := l.RC.Set(context.TODO(), string(pbRaw), string(g2Raw), 0).Result(); err != nil {
 			return nil, errors.New("failed to add pb -> G2 mapping from registry")
 		}
-
 		if _, err := l.RC.Set(context.TODO(), string(g2Raw), string(user), 0).Result(); err != nil {
 			return nil, errors.New("failed to add G2 -> user mapping from registry")
 		}
 
+		// update this debug registry map
 		registry[string(user)] = string(pbRaw)
 		registry[string(pbRaw)] = string(g2Raw)
 		registry[string(g2Raw)] = string(user)
 	}
+
 	return registry, nil
 }
