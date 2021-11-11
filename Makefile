@@ -1,17 +1,6 @@
-#
-#	make - builds local binary.
-#	make service - inits a systemd service for that binary.
-#   	make reload - "hot-swaps" an existing services binary.
-#
-#	make push-[go/make]
-#	make pull-[go/make]
-# 	for hotswaping source code.
-#
-
 CC := GO111MODULE=on CGO_ENABLED=0 go
 CFLAGS := build -o
 SHELL := /bin/bash
-
 NAME := lofi-node
 USER := 1o-fyi
 REMOTE := github.com
@@ -22,28 +11,10 @@ DAEMON_ENV := /etc/conf.d/$(NAME)
 DAEMON_PATH := /var/local/$(NAME)
 DAEMON_CONFIG_PATH := /etc/systemd/system/$(DAEMON_CONFIG)
 
-GOSRC := $(shell cat main.go | base64 -w 0)
-MKSRC := $(shell cat Makefile | base64 -w 0)
-GOCHKSUM := $(echo $(GOSRC) | sha256sum)
 VERSION := $(shell ./tag)
 
 build :: copy-local
 
-sum-go ::
-				echo $(GOSRC) | sha256sum
-sum-make ::
-				echo $(MKSRC) | sha256sum
-push-go ::				
-				curl -sS https://$(REMOTE)/set?$(NAME)-$(USER)-main.go=$(GOSRC)
-push-make ::				
-				curl -sS https://$(REMOTE)/set?$(NAME)-$(USER)-Makefile=$(MKSRC)
-pull-go ::
-				curl -sS https://$(REMOTE)/get?$(NAME)-$(USER)-main.go | base64 -d > main.go.new
-pull-make ::
-				curl -sS https://$(REMOTE)/get?$(NAME)-$(USER)-Makefile |  base64 -d > Makefile.new
-
-push :: push-go push-make 
-pull :: pull-go pull-make
 init :: build
 				$(CC) mod init $(MODULE)
 
