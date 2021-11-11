@@ -100,8 +100,13 @@ stop :: disable
 purge :: stop
 				rm -rf $(MODULE) $(DAEMON_CONFIG_PATH) $(DAEMON_PATH)
 
-reload :: purge service
+replace ::
+				mv $(NAME) $(DAEMON_PATH)/start
+
+daemon-reload ::
 				systemctl daemon-reload
+
+reload :: replace daemon-reload enable status
 
 logs ::
 				journalctl --flush && journalctl -n 5
