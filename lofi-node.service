@@ -1,5 +1,5 @@
 [Unit]
-Description="lofi-node systemd service"
+Description="development lofi-node systemd service | this should not be used for anything but testing."
 After=network.target
 
 [Service]

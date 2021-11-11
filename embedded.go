@@ -39,6 +39,13 @@ func init() {
 	redisDomain = string(<-lib.DecodeHex([]byte(redisDomain)))
 	domain = string(<-lib.DecodeHex([]byte(domain)))
 	registryUrl = string(<-lib.DecodeHex([]byte(registryUrl)))
+	check := func(s string) bool {
+		return len(s) == 0
+	}
+
+	if lib.Any(check(redisDomain), check(domain), check(registryUrl)) {
+		panic("invalid embedded config")
+	}
 
 	os.Stdout.Write([]byte("\n[ lofi-node config ]"))
 	os.Stdout.Write([]byte("\ndomain: " + domain))
