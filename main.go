@@ -33,9 +33,9 @@ func main() {
 		w.Write(rawArt)
 	})
 
-	// only succesful requests give a response, all other branches
-	// result in no response from the server to the client.
-	// this is in an effort to prevent information leakage via timing attacks
+	// no requests to /set will give a response to the client.
+	// this means failure and success should be indistinguishable from each other.
+	// This is in an effort to prevent information leakage via timing attacks
 	// or sidechannel analysis.
 	l.AddRoute("/set", func(w http.ResponseWriter, req *http.Request) {
 
