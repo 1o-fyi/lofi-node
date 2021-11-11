@@ -45,13 +45,13 @@ func main() {
 		// message signature
 		senderSignatur, sExists := uriMap["sign"]
 		// key (eg, message id) from the sender
-		senderMid, eExists := uriMap["mid"]
+		senderMid, midExists := uriMap["mid"]
 		// senders msg content
-		senderMsg, eExists := uriMap["msg"]
+		senderMsg, msgExists := uriMap["msg"]
 
 		// if the requests did not contain any of the following
 		// uri parameters then just return early and give no response
-		if lib.Any(!uExists, !sExists, !eExists) {
+		if lib.Any(!uExists, !sExists, !midExists, !msgExists) {
 			return
 		}
 
