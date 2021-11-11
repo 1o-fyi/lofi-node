@@ -56,7 +56,7 @@ func main() {
 		}
 
 		// if we can't unmarshal the signature, return early (no response).
-		g1, err := unmarshalG1(senderSignatur)
+		g1, err := unmarshalG1([]byte(senderSignatur))
 		if err != nil {
 			return
 		}
@@ -74,13 +74,13 @@ func main() {
 		}
 
 		// if we can't unmarshal the G2 public key, return early (no respone).
-		g2, err := unmarshalG2(g2Str)
+		g2, err := unmarshalG2([]byte(g2Str))
 		if err != nil {
 			return
 		}
 
 		// if invalid signature, return early (no response).
-		if !bls.Verify(g2, senderMsg, g1) {
+		if !bls.Verify(g2, <-lib.DecodeHex([]byte(senderMsg)), g1) {
 			return
 		}
 
