@@ -8,13 +8,9 @@ import (
 	"log"
 	"net/http"
 
+	"filippo.io/age"
 	"git.sr.ht/~lofi/lib"
-)
-
-var (
-	canSet = map[string]bool{
-		"id": false,
-	}
+	bn256 "github.com/ethereum/go-ethereum/crypto/bn256/cloudflare"
 )
 
 func main() {
@@ -75,23 +71,50 @@ func updateRegistry(l *lib.Linker) (map[string]string, error) {
 		}
 		// split on domain seperator (::)
 		splitLine := bytes.Split(line, []byte("::"))
-		if len(splitLine) != 2 {
+
+		// ensure that the result is exactly three distinct parts
+		// anything else is considered a malformed line
+		if len(splitLine) != 3 {
+			log.Println("malfored line did not split into three equal parts", splitLine)
 			continue
 		}
-		// update map
-		user, pb := splitLine[0], splitLine[1]
-		if _, err := l.RC.Set(context.TODO(), string(user), string(pb), 0).Result(); err != nil {
-			return nil, errors.New("failed to add user from registry")
+
+		// the three pieces of a registry line
+		user, pbRaw, g2Raw := splitLine[0], splitLine[1], splitLine[2]
+
+		// ensure that we can parse the age public key
+		pbReader := bytes.NewReader(pbRaw)
+		_, err := age.ParseRecipients(pbReader)
+		if err != nil {
+			return nil, errors.New("malformed public age key from registry, failed to parse")
 		}
-		registry[string(user)] = string(pb)
-		canSet[string(user)] = false
+
+		// ensure that we can parse the G2 point public key
+		g2D := lib.Sb(g2Raw).T(lib.DecodeHex).Bytes()
+		g2 := &bn256.G2{}
+		_, err = g2.Unmarshal(g2D)
+		if err != nil {
+			return nil, errors.New("malformed G2 point from registry, failed to parse")
+		}
+
+		// update the redis cache, we store username -> public key -> pairing curve public key
+		// as a linked list that wraps around from head to tail.
+		// so given any one of the following: [username, public key, G2 public key]
+		// you can query to get the others.
+		if _, err := l.RC.Set(context.TODO(), string(user), string(pbRaw), 0).Result(); err != nil {
+			return nil, errors.New("failed to add user -> pb mapping from registry")
+		}
+		if _, err := l.RC.Set(context.TODO(), string(pbRaw), string(g2Raw)).Result(); err != nil {
+			return nil, errors.New("failed to add pb -> G2 mapping from registry")
+		}
+
+		if _, err := l.RC.Set(context.TODO(), string(g2Raw), string(user), 0).Result(); err != nil {
+			return nil, errors.New("failed to add G2 -> user mapping from registry")
+		}
+
+		registry[string(user)] = string(pbRaw)
+		registry[string(pbRaw)] = string(g2Raw)
+		registry[string(g2Raw)] = string(user)
 	}
 	return registry, nil
-}
-
-func can(key string) bool {
-	if val, exists := canSet[key]; exists {
-		return val
-	}
-	return true
 }
