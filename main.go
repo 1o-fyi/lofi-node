@@ -26,7 +26,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("registry size: %d", len(registry))
+	log.Printf("registry size: %d", len(registry)/3)
 
 	l.AddRoute("/", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Strict-Transport-Security", "max-age=63072000")
