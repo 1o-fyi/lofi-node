@@ -7,6 +7,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"os"
 
 	"filippo.io/age"
 	"git.sr.ht/~lofi/lib"
@@ -48,6 +49,8 @@ func main() {
 		senderMid, midExists := uriMap["mid"]
 		// senders msg content
 		senderMsg, msgExists := uriMap["msg"]
+
+		sout(senderUsername, senderSignatur, senderMid, senderMsg)
 
 		// if the requests did not contain any of the following
 		// uri parameters then just return early and give no response
@@ -199,4 +202,18 @@ func unmarshalG1(g1Raw []byte) (*bn256.G1, error) {
 		return nil, errors.New("malformed G2 point from registry, failed to parse")
 	}
 	return g1, nil
+}
+
+func out(b ...[]byte) {
+	os.Stdout.Write([]byte("\n"))
+	for _, r := range b {
+		os.Stdout.Write(r)
+		os.Stdout.Write([]byte("\n"))
+	}
+}
+
+func sout(b ...string) {
+	for _, r := range b {
+		out([]byte(r))
+	}
 }
