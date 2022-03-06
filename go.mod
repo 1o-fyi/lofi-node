@@ -6,13 +6,13 @@ require (
 	filippo.io/age v1.0.0-rc.3
 	git.sr.ht/~lofi/lib v0.0.11
 	github.com/ethereum/go-ethereum v1.10.12
+	github.com/keep-network/keep-core v1.3.1
 )
 
 require (
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/go-redis/redis/v8 v8.11.3 // indirect
-	github.com/keep-network/keep-core v1.3.1 // indirect
 	github.com/zeebo/blake3 v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect
 	golang.org/x/sys v0.0.0-20210903071746-97244b99971b // indirect
