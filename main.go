@@ -4,10 +4,14 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"filippo.io/age"
 	"git.sr.ht/~lofi/lib"
@@ -32,6 +36,82 @@ func main() {
 	l.AddRoute("/", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Strict-Transport-Security", "max-age=7200")
 		w.Write(rawArt)
+	})
+
+	l.AddRoute("/ip", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Write([]byte(r.RemoteAddr))
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/body", func(rw http.ResponseWriter, r *http.Request) {
+		io.Copy(rw, r.Body)
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/header", func(rw http.ResponseWriter, r *http.Request) {
+		for k, v := range r.Header {
+			strings.Join([]string{k, strings.Join(v, ", ")}, ":")
+		}
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/ua", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Write([]byte(r.UserAgent()))
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/cs", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Write([]byte(fmt.Sprintf("%d", r.TLS.CipherSuite)))
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/peers", func(rw http.ResponseWriter, r *http.Request) {
+		for _, cert := range r.TLS.PeerCertificates {
+			rw.Write(cert.Raw)
+		}
+		rw.WriteHeader(200)
+	})
+
+	// TLSUnique contains the "tls-unique" channel binding value (see RFC 5929, Section 3). This value will be nil for TLS 1.3 connections and for all resumed connections.
+	// There are conditions in which this value might not be unique to a connection. See the Security Considerations sections of RFC 5705 and RFC 7627, and https://mitls.org/pages/attacks/3SHAKE#channelbindings.
+	l.AddRoute("/tu", func(rw http.ResponseWriter, r *http.Request) {
+		if r.TLS.TLSUnique == nil {
+			rw.Write([]byte("nil"))
+		} else {
+			rw.Write(r.TLS.TLSUnique)
+		}
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/proto", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Write([]byte(r.TLS.NegotiatedProtocol))
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/mutual", func(rw http.ResponseWriter, r *http.Request) {
+		rw.Write([]byte(fmt.Sprintf("%v", r.TLS.NegotiatedProtocolIsMutual)))
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/chains", func(rw http.ResponseWriter, r *http.Request) {
+		for _id, chain := range r.TLS.VerifiedChains {
+			rw.Write([]byte(fmt.Sprintf("CHAIN: %d", _id)))
+			for _, item := range chain {
+				rw.Write(append(item.Raw, []byte("\n")...))
+			}
+		}
+		rw.WriteHeader(200)
+	})
+
+	l.AddRoute("/raw", func(rw http.ResponseWriter, r *http.Request) {
+		raw := fmt.Sprintf("%+v", r)
+		p, err := json.Marshal(raw)
+		if err != nil {
+			rw.Write([]byte(raw))
+		} else {
+			rw.Write(p)
+		}
+		rw.WriteHeader(200)
 	})
 
 	// no requests to /set will give a response to the client.
